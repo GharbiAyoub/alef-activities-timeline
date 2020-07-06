@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <% include ../partials/header.ejs %>
+
+
+  <script src="/dhhtmlxLib/dhtmlxgantt.js"></script>
+
+  <link href="https://js.syncfusion.com/demos/jquery/content/ejthemes/default-theme/ej.web.all.min.css" rel="stylesheet" />
+  <link href="https://js.syncfusion.com/demos/jquery/content/default.css" rel="stylesheet" />
+  <link href=".https://js.syncfusion.com/demos/jquery/content/default-responsive.css" rel="stylesheet" />
+
+  <link href="https://js.syncfusion.com/demos/jquery/content/default-responsive.css" rel="stylesheet" />
+  <link href="https://js.syncfusion.com/demos/jquery/content/ejthemes/responsive-css/ej.responsive.css" rel="stylesheet" />
+ 
+ 
+  <script src="https://js.syncfusion.com/demos/jquery/scripts/jsrender.min.js"></script>
+  <script src="https://js.syncfusion.com/demos/jquery/scripts/ej.web.all.min.js" type="text/javascript"></script>
+  <script src="https://js.syncfusion.com/demos/jquery/scripts/properties.js" type="text/javascript"></script>
+  <script src="https://js.syncfusion.com/demos/jquery/scripts/jsonganttdata.js"></script>
+</head>
+
+<body>
+
+  <% include ../partials/nav.ejs %>
+  <div class="content-container-fluid" style="width:100%;height:100%;">
+    <div class="row">
+      <div class="cols-sample-area" style="width:100%;height: 100%" >
+        <div id="GanttContainer" style="width:100%;height:100%" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    $(function () {
+      $("#GanttContainer").ejGantt({
+        dataSource: [
+          {
+            taskID: 1,
+            taskName: "Project Schedule",
+            startDate: new Date("02/06/2017"),
+            endDate: new Date("03/10/2017"),
+            subtasks: [
+              {
+                taskID: 2,
+                taskName: "Planning",
+                startDate: new Date("02/06/2017"),
+                endDate: new Date("02/10/2017"),
+                subtasks: [
+                  { taskID: 3, taskName: "Plan timeline", startDate: new Date("02/06/2017"), endDate: new Date("02/10/2017"), duration: 5, progress: "80", resourceInfo: [1] },
+                  { taskID: 4, taskName: "Plan budget", startDate: new Date("02/06/2017"), endDate: new Date("02/10/2017"), duration: 5, progress: "70", predecessor: "3FS", resourceInfo: [1] },
+                  { taskID: 5, taskName: "Allocate resources", startDate: new Date("02/06/2017"), endDate: new Date("02/10/2017"), duration: 5, progress: "80", predecessor: "4SS", resourceInfo: [1] },
+                  { taskID: 6, taskName: "Planning complete", startDate: new Date("02/10/2017"), endDate: new Date("02/10/2017"), duration: 0, predecessor: "4FS" }
+                ]
+              },
+              {
+                taskID: 7,
+                taskName: "Design",
+                startDate: new Date("02/10/2017"),
+                endDate: new Date("02/14/2017"),
+                subtasks: [
+                  { taskID: 8, taskName: "Software Specification", startDate: new Date("02/10/2017"), endDate: new Date("02/12/2017"), duration: 3, progress: "60", predecessor: "6FS", resourceInfo: [2] },
+                  { taskID: 9, taskName: "Develop prototype", startDate: new Date("02/10/2017"), endDate: new Date("02/12/2017"), duration: 3, progress: "40", predecessor: "6FS", resourceInfo: [3] },
+                  { taskID: 10, taskName: "Get approval from customer", startDate: new Date("02/13/2017"), endDate: new Date("02/18/2017"), duration: 5, progress: "50", predecessor: "9FS", resourceInfo: [1] },
+                  { taskID: 11, taskName: "Design complete", startDate: new Date("02/18/2017"), endDate: new Date("02/21/2017"), duration: 3, predecessor: "10FS" }
+                ]
+              }]
+          }],
+        allowSelection: true,
+        allowColumnResize: true,
+        taskIdMapping: "taskID",
+        taskNameMapping: "taskName",
+        startDateMapping: "startDate",
+        //progressMapping: "progress",
+        durationMapping: "duration",
+        endDateMapping: "endDate",
+        childMapping: "subtasks",
+        scheduleStartDate: new Date("02/01/2017"),
+        scheduleEndDate: new Date("03/16/2017"),
+        //predecessorMapping: "predecessor",
+        toolbarSettings: {
+          showToolbar: true,
+          toolbarItems: [
+            ej.Gantt.ToolbarItems.CriticalPath,
+          ],
+        },
+        rowHeight: window.theme == "material" ? 48 : window.theme == "office-365" ? 36 : 60,
+        editSettings: {
+          allowEditing: false,
+          allowAdding: false,
+          allowDeleting: false,
+          editMode: "cellEditing",
+          allowIndent: false,
+        },
+        allowGanttChartEditing: false,
+        splitterPosition: "35%",
+        treeColumnIndex: 1,
+        isResponsive: true,
+        create: function () {
+          this.showCriticalPath(true);
+        },
+        load: load,
+      });
+    });
+    function load(args) {
+      var columns = { field: "isCritical", headerText: "Critical", allowEditing: false };
+      var column = this.getColumns();
+      column.splice(2, 0, columns);
+      this.getColumns()[0].width = window.theme == "material" ? 60 : 30;
+    }
+  </script>
+</body>
+
+</html>
